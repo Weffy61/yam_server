@@ -13,8 +13,6 @@ services:
   web:
     build:
       context: .
-    command: >
-      sh -c "python manage.py migrate"
     volumes:
       - static_volume:/app/static
     expose:
@@ -39,3 +37,4 @@ services:
 volumes:
   postgres_data:
   static_volume:
+  nginx_logs:
