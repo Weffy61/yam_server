@@ -11,12 +11,12 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   web:
-    build: .
+    build:
+      context: .
     command: >
-      sh -c "python manage.py migrate &&
-             gunicorn --bind 0.0.0.0:8000 webapp.wsgi:application"
+      sh -c "python manage.py migrate"
     volumes:
-      - .:/app
+      - static_volume:/app/static
     expose:
       - 8000
     env_file:
@@ -25,14 +25,16 @@ services:
       - db
 
   nginx:
-    image: nginx:latest
-    ports:
-      - "80:80"
+    build: ./nginx
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - static_volume:/app/static
+      - nginx_logs:/var/log/nginx
+    ports:
+      - "8000:80"
     depends_on:
       - web
+    restart: always
+
 
 volumes:
   postgres_data:
