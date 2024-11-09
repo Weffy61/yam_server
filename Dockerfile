@@ -14,4 +14,8 @@ RUN apt update && apt install -y python3-pip                                  \
 
 COPY . .
 
-ENTRYPOINT ["sh", "./entrypoint.sh"]
+RUN python3 manage.py collectstatic --noinput
+
+RUN python3 manage.py migrate
+
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "webapp.wsgi:application"]
