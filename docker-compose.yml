@@ -9,8 +9,10 @@ services:
       POSTGRES_PASSWORD: root
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    restart: always
 
   web:
+    restart: always
     build: .
     command: >
       sh -c "python manage.py migrate &&
@@ -27,6 +29,7 @@ services:
       - db
 
   nginx:
+    restart: always
     image: nginx:latest
     ports:
       - "80:80"
