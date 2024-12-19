@@ -7,6 +7,13 @@ class Client(models.Model):
     uuid = models.CharField(verbose_name='Уникальный идентификатор', max_length=300)
     subscription = models.DateTimeField(verbose_name='Подписка')
     tg_username = models.CharField(verbose_name='Тег', max_length=200, blank=True, null=True)
+    application = models.OneToOneField(
+        'Application',
+        verbose_name='Приложение',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
 
     class Meta:
         verbose_name = 'Клиент'
@@ -14,3 +21,14 @@ class Client(models.Model):
 
     def __str__(self):
         return self.username
+
+
+class Application(models.Model):
+    name = models.CharField(verbose_name='Название приложения', max_length=150)
+
+    class Meta:
+        verbose_name = 'Приложение'
+        verbose_name_plural = 'Приложения'
+
+    def __str__(self):
+        return self.name
